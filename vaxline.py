@@ -27,6 +27,10 @@ class TooYoungToVax(Exception):
     pass
 
 
+class SkipMessage(Exception):
+    pass
+
+
 def get_agivars():
     agivars = {}
     while True:
@@ -54,6 +58,13 @@ def stream_file(filename, escape_digits='""'):
     if rv == 0:
         return None
     return chr(rv)
+
+
+def stream_file_skippable(filename, skipchr='#'):
+    rv = stream_file(filename, skipchr)
+    if rv == skipchr:
+        raise SkipMessage()
+    return rv
 
 
 def wait_for_digit(timeout=-1):
@@ -212,10 +223,14 @@ def get_phase(dob):
 
 
 def handle_call():
-    stream_file('vaxline_intro_1a')
-    stream_file('vaxline_intro_1b')
-    stream_file('vaxline_intro_1c')
-    stream_file('vaxline_on_the_web')
+    try:
+        stream_file_skippable('vaxline_intro_1a')
+        stream_file_skippable('vaxline_intro_1b')
+        stream_file_skippable('vaxline_intro_1c')
+        stream_file_skippable('vaxline_on_the_web')
+    except SkipMessage:
+        pass
+
     dob = get_dob()
 
     if age_in_years(dob) < 16:
