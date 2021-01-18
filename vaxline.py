@@ -80,7 +80,8 @@ def wait_for_digit(timeout=-1):
 
 
 def stream_file_read_digits(filename, re=regex.compile(r'\d'), tries=3,
-                            digit_timeout=30, try_again_filename='inval'):
+                            digit_timeout=30 * 1000,
+                            try_again_filename='inval'):
     if tries <= 0:
         raise MaxRetriesExceeded()
 
@@ -209,7 +210,7 @@ def get_phase(dob):
             result = stream_file('vaxline_phase_gt60_exit', escape_digits='123')
         if not result:
             try:
-                result = wait_for_digit(30)
+                result = wait_for_digit(30 * 1000)
             except DigitPressTimeout:
                 result = '3'
         return digit_map.get(result, Phase.PHASE_2)
@@ -219,7 +220,7 @@ def get_phase(dob):
         result = stream_file('vaxline_phase_msg2', escape_digits='123456')
     if not result:
         try:
-            result = wait_for_digit(30)
+            result = wait_for_digit(30 * 1000)
         except DigitPressTimeout:
             result = '6'
     return digit_map.get(result, Phase.PHASE_3)
