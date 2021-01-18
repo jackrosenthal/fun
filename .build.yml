@@ -10,8 +10,8 @@ sources:
 secrets:
   - 54baa0e1-63b8-4658-998d-941f7108ed84
 environment:
-  - sshdest: >-
-      srhtdeploy@cloud.steamboatfamilydoc.com
+  sshdest: >-
+    srhtdeploy@cloud.steamboatfamilydoc.com
 tasks:
   - install-pip-packages: |
       cd vaxline
