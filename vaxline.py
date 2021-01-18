@@ -177,6 +177,8 @@ def get_phase(dob):
         '5': Phase.PHASE_2,
     }
 
+    stream_file('vaxline_phase_intro')
+
     if age_in_years(dob) >= 60:
         result = stream_file('vaxline_phase_msg1', escape_digits='123')
         if not result:
