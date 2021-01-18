@@ -254,7 +254,7 @@ def handle_call():
     with tempfile.NamedTemporaryFile(delete=False, suffix='.raw') as f:
         file_name = f.name
 
-    agi('RECORD FILE', file_name, 'sln16', '""', 30, 0, 1, 'S=5')
+    agi('RECORD FILE', file_name, 'sln16', '""', 20 * 1000, 0, 1, 'S=5')
 
     return (dob, phase, phone_number, file_name)
 
