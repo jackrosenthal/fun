@@ -61,6 +61,15 @@ class AGIState:
         assert False
 
 
+def send_agivars(agivars, out_file):
+    for var, value in agivars.items():
+        line = "{}: {}".format(var, value)
+        print("<=", line)
+        print(line, file=out_file)
+    print("-----")
+    print(file=out_file)
+
+
 def run_test(state):
     agifile = sys.argv[1]
 
@@ -68,6 +77,10 @@ def run_test(state):
                             stdin=subprocess.PIPE,
                             stdout=subprocess.PIPE,
                             encoding='utf-8')
+
+    send_agivars({'agi_tester': True}, proc.stdin)
+    proc.stdin.flush()
+
     give_5_to_finish = False
 
     while True:
@@ -81,9 +94,10 @@ def run_test(state):
         print('=>', *cmd)
         if cmd[0] == 'HANGUP':
             give_5_to_finish = True
-        return_status = state.process_command(*cmd)
-        print('<=', *return_status)
-        print(*return_status, file=proc.stdin)
+        status, result = state.process_command(*cmd)
+        response = '{} result={}'.format(status, result)
+        print('<=', response)
+        print(response, file=proc.stdin)
         proc.stdin.flush()
 
 

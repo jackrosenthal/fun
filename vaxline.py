@@ -27,10 +27,20 @@ class TooYoungToVax(Exception):
     pass
 
 
+def get_agivars():
+    agivars = {}
+    while True:
+        line = input()
+        if not line:
+            return agivars
+        var, _, value = line.partition(': ')
+        agivars[var] = value
+
+
 def agi(command, *args):
     print(command, *args)
     response = input()
-    response_code, _, rest = response.partition(' ')
+    response_code, _, rest = response.partition(' result=')
     if response_code == '200':
         rv, _, rest = rest.partition(' ')
         return int(rv), rest
@@ -247,6 +257,7 @@ def submit_form(dob, phase, phone_number, recording_file_name):
 
 
 def main():
+    get_agivars()
     agi('ANSWER')
     result = None
     try:
