@@ -28,6 +28,8 @@ tasks:
           CheckHostIP no
           StrictHostKeyChecking no
       EOF
+      sudo apt update
+      sudo apt install swig libpulse-dev libasound2-dev
       rsync -avz vaxline/ deploy:vaxline
       ssh deploy sudo python3 -m pip install -r vaxline/requirements.txt
       ssh deploy sudo rsync -avz vaxline/ /var/vaxline
