@@ -3,6 +3,7 @@ packages:
   - git
   - python
   - python-regex
+  - python-pip
   - rsync
   - swig
 sources:
@@ -15,10 +16,10 @@ environment:
 tasks:
   - install-pip-packages: |
       cd vaxline
-      pip install --user -r requirements.txt
+      python3 -m pip install --user -r requirements.txt
   - run-agitester: |
       vaxline/agitester.py vaxline/vaxline.py
   - deploy-to-unicorn: |
       rsync -avz vaxline/ $sshdest:vaxline
-      ssh $sshdest sudo pip install -r vaxline/requirements.txt
+      ssh $sshdest sudo python3 -m pip install -r vaxline/requirements.txt
       ssh $sshdest sudo rsync -avz vaxline/ /var/vaxline
