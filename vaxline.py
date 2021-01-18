@@ -283,7 +283,12 @@ def main():
     except TooYoungToVax:
         stream_file('vaxline_too_young')
     finally:
-        agi('HANGUP')
+        try:
+            agi('HANGUP')
+        except AsteriskChannelError:
+            # Ignore channel error on hangup, the user probably
+            # already hung up themselves.
+            pass
 
     if result:
         submit_form(*result)
