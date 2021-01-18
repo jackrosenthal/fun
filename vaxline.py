@@ -223,16 +223,20 @@ def handle_call():
     with tempfile.NamedTemporaryFile(delete=False, suffix='.raw') as f:
         file_name = f.name
 
-    agi('RECORD FILE', file_name, 'sln16', "", 30, 0, 1, 'S=5')
+    agi('RECORD FILE', file_name, 'sln16', '""', 30, 0, 1, 'S=5')
 
     return (dob, phase, phone_number, file_name)
 
 
 def submit_form(dob, phase, phone_number, recording_file_name):
     dict_file_path = pathlib.Path(__file__).parent / 'names.dict'
-    sphinx = pocketsphinx.Pocketsphinx(dict=str(dict_file_path))
+    sphinx = pocketsphinx.Pocketsphinx(dict=str(dict_file_path), verbose=False)
     sphinx.decode(audio_file=recording_file_name)
-    full_name = ' '.join(sphinx).upper()
+    best_list = list(sphinx.best(1))
+    if best_list:
+        full_name = best_list[0][0].upper()
+    else:
+        full_name = '<unclear audio>'
     os.unlink(recording_file_name)
 
     with open('/tmp/result.txt', 'w') as f:
