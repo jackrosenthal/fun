@@ -1,9 +1,11 @@
 image: archlinux
 packages:
   - git
+  - pulseaudio
   - python
-  - python-regex
   - python-pip
+  - python-regex
+  - python-wheel
   - rsync
   - swig
 sources:
