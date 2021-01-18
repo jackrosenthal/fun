@@ -1,0 +1,22 @@
+image: archlinux
+packages:
+  - git
+  - python
+  - python-regex
+  - rsync
+  - swig
+sources:
+  - git@git.sr.ht:~jmr/vaxline
+secrets:
+  - 54baa0e1-63b8-4658-998d-941f7108ed84
+environment:
+  - sshdest: >-
+      srhtdeploy@cloud.steamboatfamilydoc.com
+tasks:
+  - install-pip-packages: |
+      cd vaxline
+      pip install --user -r requirements.txt
+  - deploy-to-unicorn: |
+      rsync -avz vaxline/ $sshdest:vaxline
+      ssh $sshdest sudo pip install -r vaxline/requirements.txt
+      ssh $sshdest sudo rsync -avz vaxline/ /var/vaxline
