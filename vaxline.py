@@ -44,9 +44,6 @@ def get_agivars():
 def agi(command, *args):
     print(command, *args)
     response = input()
-    with open('/tmp/vaxlineagi.log', 'a') as f:
-        print("->", command, *args, file=f)
-        print("<-", response, file=f)
     response_code, _, rest = response.partition(' result=')
     if response_code == '200':
         rv, _, rest = rest.partition(' ')
