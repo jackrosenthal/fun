@@ -1,7 +1,8 @@
 image: archlinux
 packages:
   - git
-  - pulseaudio
+  - libpulse
+  - alsa-lib
   - python
   - python-pip
   - python-regex
