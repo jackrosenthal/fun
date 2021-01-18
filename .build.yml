@@ -13,9 +13,6 @@ sources:
   - git@git.sr.ht:~jmr/vaxline
 secrets:
   - 54baa0e1-63b8-4658-998d-941f7108ed84
-environment:
-  sshdest: >-
-    srhtdeploy@cloud.steamboatfamilydoc.com
 tasks:
   - install-pip-packages: |
       cd vaxline
@@ -23,6 +20,14 @@ tasks:
   - run-agitester: |
       vaxline/agitester.py vaxline/vaxline.py
   - deploy-to-unicorn: |
-      rsync -avz vaxline/ $sshdest:vaxline
-      ssh $sshdest sudo python3 -m pip install -r vaxline/requirements.txt
-      ssh $sshdest sudo rsync -avz vaxline/ /var/vaxline
+      cat <<EOF >.ssh/config
+      Host deploy
+          HostName cloud.steamboatfamilydoc.com
+          User srhtdeploy
+          UserKnownHostsFile /dev/null
+          CheckHostIP no
+          StrictHostKeyChecking no
+      EOF
+      rsync -avz vaxline/ deploy:vaxline
+      ssh deploy sudo python3 -m pip install -r vaxline/requirements.txt
+      ssh deploy sudo rsync -avz vaxline/ /var/vaxline
