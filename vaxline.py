@@ -267,9 +267,12 @@ def submit_form(dob, phase, phone_number, recording_file_name):
         full_name = '<unclear audio>'
     os.unlink(recording_file_name)
 
-    with open('/tmp/result.txt', 'w') as f:
-        print('DOB={!r}, PHASE={!r}, PHONE={!r}, NAME={!r}'.format(
-            dob, phase, phone_number, full_name), file=f)
+    with open('/tmp/vaxline.txt', 'a') as f:
+        print('{},{},{},{}'.format(
+            dob.strftime('%Y-%m-%d'),
+            phase.name,
+            phone_number,
+            full_name), file=f)
 
 
 def main():
