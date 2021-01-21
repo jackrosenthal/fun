@@ -5,6 +5,7 @@ import enum
 import os
 import pathlib
 import regex
+import signal
 import sys
 import tempfile
 
@@ -276,6 +277,7 @@ def submit_form(dob, phase, phone_number, recording_file_name):
 
 
 def main():
+    signal.signal(signal.SIGHUP, signal.SIG_IGN)
     get_agivars()
     agi('ANSWER')
     result = None
