@@ -2,7 +2,6 @@
 
 import datetime
 import enum
-import os
 import pathlib
 import regex
 import signal
@@ -249,12 +248,12 @@ def handle_call():
 
     stream_file('vaxline_name')
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.raw') as f:
+    with tempfile.NamedTemporaryFile(
+            prefix='vaxline_{}_'.format(phone_number)) as f:
         file_name = f.name
+        agi('RECORD FILE', file_name, 'sln16', '""', 20 * 1000, 0, 1, 'S=5')
 
-    agi('RECORD FILE', file_name, 'sln16', '""', 20 * 1000, 0, 1, 'S=5')
-
-    return (dob, phase, phone_number, file_name)
+    return (dob, phase, phone_number, '{}.sln16'.format(file_name))
 
 
 def submit_form(dob, phase, phone_number, recording_file_name):
@@ -266,7 +265,6 @@ def submit_form(dob, phase, phone_number, recording_file_name):
         full_name = best_list[0][0].upper()
     else:
         full_name = '<unclear audio>'
-    os.unlink(recording_file_name)
 
     with open('/tmp/vaxline.txt', 'a') as f:
         print('{},{},{},{}'.format(

@@ -54,8 +54,8 @@ class AGIState:
         if command == 'RECORD':
             assert args[0] == 'FILE'
             filename = args[1]
-            assert args[2] == 'sln16'
-            with open(filename, 'w') as f:
+            fmt = args[2]
+            with open("{}.{}".format(filename, fmt), 'w') as f:
                 pass
             return 200, 0
         assert False
