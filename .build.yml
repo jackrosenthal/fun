@@ -9,12 +9,14 @@ packages:
   - python
   - python-anytree
   - python-colorama
+  - python-future
   - python-packaging
   - python-pip
   - python-progress
   - python-psutil
   - python-pyelftools
   - python-pykwalify
+  - python-pyserial
   - python-setuptools
   - python-wheel
   - python-yaml
@@ -39,12 +41,15 @@ tasks:
       west espressif install
       tcpath="$(printf %s ~/.espressif/tools/xtensa-esp32-elf/esp-*/xtensa-esp32-elf)"
       echo "export ESPRESSIF_TOOLCHAIN_PATH='${tcpath}'" >>~/.buildenv
+      echo 'export PATH="${PATH}:${ESPRESSIF_TOOLCHAIN_PATH}/bin"' >>~/.buildenv
   - west-espressif-update: |
       cd ~/zephyrproject
       west espressif update
   - configure: |
       cd ~/sprinkler32
-      cmake -Bbuild
+      cmake -B ~/build
   - build: |
-      cd ~/sprinkler32
-      make -C build
+      make -C ~/build
+artifacts:
+  - build/zephyr/zephyr.bin
+  - build/zephyr/zephyr.elf
