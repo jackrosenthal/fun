@@ -6,43 +6,35 @@
 #define MAX_PAIRS ((MAX_STUDENTS * (MAX_STUDENTS - 1)) / 2)
 
 static int students;
-static int requests;
 static struct {
-	int a;
-	int b;
-} request_pairs[MAX_PAIRS];
+	int num_disallowed;
+	int list[MAX_STUDENTS];
+} requests[MAX_STUDENTS];
+static int assignments[MAX_STUDENTS];
 
-static bool find_solution(int groups, int *assignments)
+static bool ok(int group, int student)
 {
-	int student_to_assign = -1;
-
-	/* Check for contradicting requests */
-	for (int i = 0; i < requests; i++) {
-		int assign_a = assignments[request_pairs[i].a];
-		int assign_b = assignments[request_pairs[i].b];
-
-		if (assign_a == -1) {
-			student_to_assign = request_pairs[i].a;
-			continue;
-		}
-
-		if (assign_b == -1) {
-			student_to_assign = request_pairs[i].b;
-			continue;
-		}
-
-		if (assign_a == assign_b)
+	for (int i = 0; i < requests[student].num_disallowed; i++) {
+		if (assignments[requests[student].list[i]] == group)
 			return false;
 	}
 
-	/* All requests satisfied is the base case */
-	if (student_to_assign == -1)
+	return true;
+}
+
+static bool find_solution(int groups, int student_to_assign)
+{
+	/* Base case */
+	if (student_to_assign >= students)
 		return true;
 
 	for (int group = 0; group < groups; group++) {
+		if (!ok(group, student_to_assign))
+			continue;
+
 		assignments[student_to_assign] = group;
 
-		if (find_solution(groups, assignments))
+		if (find_solution(groups, student_to_assign + 1))
 			return true;
 	}
 
@@ -52,13 +44,11 @@ static bool find_solution(int groups, int *assignments)
 
 static int find_min_pairs(void)
 {
-	int assignments[MAX_STUDENTS];
-
 	for (int groups = 1; groups <= students; groups++) {
 		for (int i = 0; i < students; i++)
 			assignments[i] = -1;
 
-		if (find_solution(groups, assignments))
+		if (find_solution(groups, 0))
 			return groups;
 	}
 
@@ -67,15 +57,23 @@ static int find_min_pairs(void)
 
 int main(void)
 {
-	scanf("%d\n", &students);
-	scanf("%d\n", &requests);
+	int num_requests;
 
-	for (int i = 0; i < requests; i++) {
-		scanf("%d %d\n", &request_pairs[i].a, &request_pairs[i].b);
+	scanf("%d\n", &students);
+	scanf("%d\n", &num_requests);
+
+	for (int i = 0; i < num_requests; i++) {
+		int a;
+		int b;
+
+		scanf("%d %d\n", &a, &b);
 
 		/* Adjust to zero index */
-		request_pairs[i].a -= 1;
-		request_pairs[i].b -= 1;
+		a--;
+		b--;
+
+		requests[a].list[requests[a].num_disallowed++] = b;
+		requests[b].list[requests[b].num_disallowed++] = a;
 	}
 
 	printf("%d\n", find_min_pairs());
