@@ -45,10 +45,12 @@ static bool find_solution(int groups, int student_to_assign)
 static int find_min_pairs(void)
 {
 	for (int groups = 1; groups <= students; groups++) {
-		for (int i = 0; i < students; i++)
+		assignments[0] = 0;
+
+		for (int i = 1; i < students; i++)
 			assignments[i] = -1;
 
-		if (find_solution(groups, 0))
+		if (find_solution(groups, 1))
 			return groups;
 	}
 
