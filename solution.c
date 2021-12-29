@@ -52,7 +52,7 @@ static int find_min_pairs(void)
 {
 	int assignments[MAX_STUDENTS];
 
-	for (int groups = 0; groups <= students; groups++) {
+	for (int groups = 1; groups <= students; groups++) {
 		for (int i = 0; i < students; i++)
 			assignments[i] = -1;
 
