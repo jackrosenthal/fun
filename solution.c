@@ -12,7 +12,8 @@ static struct {
 	int b;
 } request_pairs[MAX_PAIRS];
 
-static bool find_solution(int groups, int *assignments) {
+static bool find_solution(int groups, int *assignments)
+{
 	int student_to_assign = -1;
 
 	/* Check for contradicting requests */
