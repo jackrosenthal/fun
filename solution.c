@@ -46,6 +46,7 @@ static bool find_solution(int groups, int *assignments)
 			return true;
 	}
 
+	assignments[student_to_assign] = -1;
 	return false;
 }
 
