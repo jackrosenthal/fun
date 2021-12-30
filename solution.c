@@ -24,11 +24,16 @@ static bool ok(int group, int student)
 
 static bool find_solution(int groups, int student_to_assign)
 {
+	int max_group = student_to_assign;
+
 	/* Base case */
 	if (student_to_assign >= students)
 		return true;
 
-	for (int group = 0; group < groups; group++) {
+	if (max_group >= groups)
+		max_group = groups - 1;
+
+	for (int group = 0; group <= max_group; group++) {
 		if (!ok(group, student_to_assign))
 			continue;
 
@@ -45,12 +50,10 @@ static bool find_solution(int groups, int student_to_assign)
 static int find_min_pairs(void)
 {
 	for (int groups = 1; groups <= students; groups++) {
-		assignments[0] = 0;
-
-		for (int i = 1; i < students; i++)
+		for (int i = 0; i < students; i++)
 			assignments[i] = -1;
 
-		if (find_solution(groups, 1))
+		if (find_solution(groups, 0))
 			return groups;
 	}
 
