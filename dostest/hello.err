@@ -1,0 +1,4 @@
+hello.c(363): Error! E1176: Parameter 2, pointer type mismatch
+hello.c(363): Note! I2003: source conversion type is 'void (*)(void )'
+hello.c(363): Note! I2004: target conversion type is 'void (__interrupt *)()'
+hello.c(363): Note! I2002: '_dos_setvect' defined in: /opt/watcom/h/dos.h(192)
