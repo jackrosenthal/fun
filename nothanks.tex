@@ -1,0 +1,25 @@
+\documentclass{article}
+
+\usepackage{fontspec}
+\usepackage{pgffor}
+\usepackage[paperwidth=3in,paperheight=5in]{geometry}
+
+\pagenumbering{gobble}
+\newcommand\dunderline[3][-1pt]{{%
+  \sbox0{#3}%
+  \ooalign{\copy0\cr\rule[\dimexpr#1-#2\relax]{\wd0}{#2}}}}
+
+\begin{document}
+
+\font\big=cmr17 at 160pt
+\big
+
+\begin{center}
+  \foreach \n in {3,...,5}{\vspace*{\fill}\n\vspace*{\fill}\clearpage}
+  \vspace*{\fill}\dunderline[-9pt]{12pt}{6}\vspace*{\fill}\clearpage
+  \foreach \n in {7,...,8}{\vspace*{\fill}\n\vspace*{\fill}\clearpage}
+  \vspace*{\fill}\dunderline[-9pt]{12pt}{9}\vspace*{\fill}\clearpage
+  \foreach \n in {10,...,35}{\vspace*{\fill}\n\vspace*{\fill}\clearpage}
+\end{center}
+
+\end{document}
