@@ -1,0 +1,38 @@
+image: archlinux
+packages:
+  - git
+  - libpulse
+  - alsa-lib
+  - python
+  - python-pip
+  - python-regex
+  - python-wheel
+  - rsync
+  - swig
+sources:
+  - git@git.sr.ht:~jmr/vaxline
+secrets:
+  - 54baa0e1-63b8-4658-998d-941f7108ed84
+tasks:
+  - install-pip-packages: |
+      cd vaxline
+      python3 -m pip install --user -r requirements.txt
+  - run-agitester: |
+      vaxline/agitester.py vaxline/vaxline.py
+  - deploy-to-unicorn: |
+      cat <<EOF >.ssh/config
+      Host deploy
+          HostName cloud.steamboatfamilydoc.com
+          User srhtdeploy
+          UserKnownHostsFile /dev/null
+          CheckHostIP no
+          StrictHostKeyChecking no
+          ControlMaster auto
+          ControlPath /tmp/ssh_deploy.socket
+          ControlPersist 10m
+      EOF
+      ssh deploy sudo apt update
+      ssh deploy sudo apt install swig libpulse-dev libasound2-dev
+      rsync -avz vaxline/ deploy:vaxline
+      ssh deploy sudo python3 -m pip install -r vaxline/requirements.txt
+      ssh deploy sudo rsync -avz vaxline/ /var/vaxline
