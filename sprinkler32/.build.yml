@@ -1,0 +1,55 @@
+image: archlinux
+packages:
+  - cmake
+  - dtc
+  - file
+  - gcc
+  - git
+  - make
+  - python
+  - python-anytree
+  - python-colorama
+  - python-future
+  - python-packaging
+  - python-pip
+  - python-progress
+  - python-psutil
+  - python-pyelftools
+  - python-pykwalify
+  - python-pyserial
+  - python-setuptools
+  - python-wheel
+  - python-yaml
+  - wget
+  - xz
+sources:
+  - https://git.sr.ht/~jmr/sprinkler32
+tasks:
+  - install-west: |
+      python3 -m pip install --user west
+      echo 'export PATH="${HOME}/.local/bin:${PATH}"' >>~/.buildenv
+  - west-init: |
+      west init ~/zephyrproject
+  - west-update: |
+      cd ~/zephyrproject
+      west update
+  - west-zephyr-export: |
+      cd ~/zephyrproject
+      west zephyr-export
+  - west-espressif-install: |
+      cd ~/zephyrproject
+      west espressif install
+      tcpath="$(printf %s ~/.espressif/tools/xtensa-esp32-elf/esp-*/xtensa-esp32-elf)"
+      echo "export ESPRESSIF_TOOLCHAIN_PATH='${tcpath}'" >>~/.buildenv
+      echo 'export PATH="${PATH}:${ESPRESSIF_TOOLCHAIN_PATH}/bin"' >>~/.buildenv
+  - west-espressif-update: |
+      cd ~/zephyrproject
+      west espressif update
+  - configure: |
+      cd ~/sprinkler32
+      cmake -B ~/build
+  - build: |
+      make -C ~/build
+artifacts:
+  - build/zephyr/zephyr.bin
+  - build/zephyr/zephyr.elf
