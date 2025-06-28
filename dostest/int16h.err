@@ -1,0 +1,20 @@
+int16h.asm(1): Error! E223: Segment name is missing
+int16h.asm(2): Error! E214: Colon is expected
+int16h.asm(3): Error! E214: Colon is expected
+int16h.asm(5): Error! E306: Label is defined outside segment
+int16h.asm(6): Error! E225: Data emitted with no segment
+int16h.asm(7): Error! E225: Data emitted with no segment
+int16h.asm(9): Error! E225: Data emitted with no segment
+int16h.asm(10): Error! E225: Data emitted with no segment
+int16h.asm(11): Error! E225: Data emitted with no segment
+int16h.asm(12): Error! E225: Data emitted with no segment
+int16h.asm(13): Error! E225: Data emitted with no segment
+int16h.asm(15): Error! E225: Data emitted with no segment
+int16h.asm(17): Error! E225: Data emitted with no segment
+int16h.asm(18): Error! E225: Data emitted with no segment
+int16h.asm(19): Error! E225: Data emitted with no segment
+int16h.asm(20): Error! E225: Data emitted with no segment
+int16h.asm(21): Error! E225: Data emitted with no segment
+int16h.asm(23): Error! E225: Data emitted with no segment
+int16h.asm(25): Error! E225: Data emitted with no segment
+int16h.asm(25): Error! E249: End directive required at end of file

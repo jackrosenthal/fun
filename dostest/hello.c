@@ -287,13 +287,13 @@ static void process_scancode(uint8_t scancode)
 	int modkey = 0;
 	char letter;
 
-	//printf("process_scancode 0x%02X\n", scancode);
+	printf("process_scancode 0x%02X\n", scancode);
 
 	released = !!(scancode & 0x80);
 	modkey = get_mod(scancode);
 
 	if (modkey) {
-		//printf("modkey=0x%02X\n", modkey);
+		printf("modkey=0x%02X\n", modkey);
 		if (released)
 			modstate &= ~modkey;
 		else
@@ -354,7 +354,7 @@ uint16_t int16_c(int16_t ax)
 	return 0;
 }
 
-extern void int16h(void);
+extern void __interrupt int16h(void);
 
 int main() {
 	char c;
